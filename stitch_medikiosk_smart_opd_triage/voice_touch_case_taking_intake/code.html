@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>MediKiosk Smart OPD Shell</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#f9f9ff;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-surface-variant": "#3f4944", "error-container": "#ffdad6", "on-error": "#ffffff", "surface-container-highest": "#d8e3fb", "on-tertiary-fixed": "#2f1500", "tertiary-fixed-dim": "#ffb77d", "background": "#f9f9ff", "outline-variant": "#bfc9c2", "on-surface": "#111c2d", "surface-tint": "#226a53", "on-background": "#111c2d", "error": "#ba1a1a", "on-secondary-fixed-variant": "#00504a", "primary-container": "#0d5c46", "outline": "#6f7974", "on-secondary": "#ffffff", "on-error-container": "#93000a", "tertiary-container": "#7d4200", "on-tertiary-container": "#ffb477", "inverse-surface": "#263143", "surface-dim": "#cfdaf2", "on-primary-fixed-variant": "#00513d", "on-secondary-fixed": "#00201d", "surface-container-lowest": "#ffffff", "inverse-primary": "#8ed5b9", "primary-fixed": "#aaf1d4", "tertiary": "#5c2f00", "on-tertiary-fixed-variant": "#6e3900", "secondary-fixed-dim": "#80d5cb", "secondary-container": "#99efe5", "on-secondary-container": "#006f67", "on-primary": "#ffffff", "on-tertiary": "#ffffff", "primary": "#004331", "secondary-fixed": "#9cf2e8", "surface-container-low": "#f0f3ff", "tertiary-fixed": "#ffdcc3", "surface-container-high": "#dee8ff", "on-primary-fixed": "#002117", "on-primary-container": "#8cd2b6", "inverse-on-surface": "#ecf1ff", "surface-bright": "#f9f9ff", "primary-fixed-dim": "#8ed5b9", "surface-variant": "#d8e3fb", "surface-container": "#e7eeff", "surface": "#f9f9ff", "secondary": "#006a63" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin-desktop": "3rem", "space-3xl": "4rem", "space-2xl": "3rem", "margin-tablet": "2rem", "gutter-tablet": "1.5rem", "touch-min": "3.5rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-2xs": "0.25rem", "kiosk-touch-target": "4rem", "gutter-mobile": "1rem", "gutter-desktop": "2rem", "space-md": "1rem", "space-xl": "2rem", "space-sm": "0.75rem", "space-xs": "0.5rem" }, fontFamily: { "body-xl": ["Work Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Work Sans"], "body-sm": ["Work Sans"], "label-sm": ["Work Sans"], "label-lg": ["Work Sans"], "display-lg-mobile": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "body-md": ["Work Sans"], "body-lg": ["Work Sans"], "headline-lg": ["Plus Jakarta Sans"], "code-data": ["JetBrains Mono"] }, fontSize: { "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "600" }], "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600" }], "label-md": ["14px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }], "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }], "label-lg": ["16px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "600" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "code-data": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-20 px-space-md flex flex-col justify-center gap-space-2xs"><div class="flex items-center justify-between"><div class="flex items-center gap-space-xs"><div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[22px]">local_hospital</span></div><div><span class="font-headline-sm text-headline-sm text-primary tracking-tight">MediKiosk</span><span class="ml-1.5 font-code-data text-label-sm text-outline">SIH26047</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Multilingual Voice Assistant Active" class="h-11 px-space-xs rounded-full bg-secondary-container flex items-center gap-1.5 text-on-secondary-container transition-transform active:scale-95"><span class="material-symbols-outlined text-[18px] animate-pulse">graphic_eq</span><span class="font-label-sm text-label-sm">AI Voice</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="flex items-center justify-between"><div class="flex items-center gap-1.5 bg-surface-container-highest px-2 py-0.5 rounded-full"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-sm text-label-sm text-on-surface">ABHA Linked • OPD Token #42</span></div><h1 class="font-label-md text-label-md text-on-surface-variant truncate max-w-[140px]">Intake And Voice</h1></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-20 bg-surface px-space-margin-mobile"><div class="flex flex-col w-full gap-space-md">
+<!-- Top Audio Guidance Stream Banner -->
+<div class="w-full bg-primary-container text-on-primary rounded-xl p-space-sm shadow-sm flex items-center justify-between overflow-hidden relative">
+<div class="flex items-center gap-space-xs z-10">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-fixed text-[24px]" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+<p class="font-label-sm text-label-sm text-primary-fixed tracking-wide uppercase">Bhashini Voice AI Active</p>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-primary truncate">सुनिए या बोलिए (Listening...)</h2>
+</div>
+</div>
+<!-- Animated Soundwave Canvas/SVG -->
+<div class="flex items-center gap-1 z-10 pl-2">
+<span class="w-1 bg-secondary-fixed rounded-full animate-bounce h-5" style="animation-delay: 0.1s"></span>
+<span class="w-1 bg-primary-fixed rounded-full animate-bounce h-8" style="animation-delay: 0.25s"></span>
+<span class="w-1 bg-secondary-fixed rounded-full animate-bounce h-4" style="animation-delay: 0.15s"></span>
+<span class="w-1 bg-primary-fixed rounded-full animate-bounce h-7" style="animation-delay: 0.3s"></span>
+<span class="w-1 bg-secondary-fixed rounded-full animate-bounce h-3" style="animation-delay: 0.05s"></span>
+</div>
+<!-- Subtle Ambient Glow -->
+<div class="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-secondary/30 blur-xl pointer-events-none"></div>
+</div>
+<!-- Real-time Red Flag & Triage Safety Pill -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-xs shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-7 h-7 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container text-[18px]">verified</span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Red-Flag Monitor: SAFE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">No acute cardiac or neurological emergency</span>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full flex-shrink-0">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-code-data text-label-sm text-on-surface">Vitals OK</span>
+</div>
+</div>
+<!-- AYUSH Mode / SOCRATES Active Switcher -->
+<div class="w-full bg-surface-container-high rounded-xl p-1 flex items-center">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-lowest shadow-sm flex items-center justify-center gap-1.5 text-primary transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">spa</span>
+<span class="font-label-md text-label-md">दशविध परीक्षा (AYUSH)</span>
+</button>
+<button class="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5 text-on-surface-variant transition-all hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">notes</span>
+<span class="font-label-md text-label-md">SOCRATES Clinical</span>
+</button>
+</div>
+<!-- Main Question Guidance Card with Dual-Lingual Vocal Prompt -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-bold">प्रश्न ३ / Question 3</span>
+<span class="bg-surface-container text-on-surface-variant font-code-data text-label-sm px-2 py-0.5 rounded-full">अग्नि व कोष्ठ (Agni/Bowel)</span>
+</div>
+<button aria-label="Replay Question Audio" class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[22px]">replay</span>
+</button>
+</div>
+<!-- Visual Avatar / Clinical Prompt Support -->
+<div class="flex items-start gap-space-sm">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-low flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Warm welcoming animated 3D Indian healthcare elder nurse avatar with stethoscope and friendly smile, soft clinical ambient lighting, gentle colors matching emerald green theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7lI9OP0h65YdbOCo6fEVlEEO6DH6GbfYd-TSb8WrWnK2w5hH3b4KUEvfCwKMDbt_ZxMD-qwB_R6Xa440HrlL-xtqRfFfKFkkQqV9YHFBMwK_vr8yZDQiP1_b-7S_4Kww0j7LAJlkJh6-BrbYSNBLwwkWQQvRvNAKKr2A2bxxdoBS50euTqeKv2sd8Ft9gvm-M3vQiOhBPkFJwo9JhI0DP_HvAYVn51f4w5S_6RcxBXDcaLRJQ1T8-"/>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-snug">
+          आपको यह परेशानी कब से है और खाने-पीने से क्या असर पड़ता है?
+        </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+          "How long have you felt this discomfort, and how does your digestion feel?"
+        </p>
+</div>
+</div>
+<!-- Active Speech Subtitle / Auto-captions for Semi-literate -->
+<div class="w-full bg-surface-container-low rounded-xl p-space-xs flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] animate-pulse">record_voice_over</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic truncate">
+        बोलिए: "मुझे २ दिन से भूख कम लग रही है..."
+      </p>
+</div>
+</div>
+<!-- Touch & Pictorial Response Options (High-Touch Target > 64px) -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md text-on-surface">स्पर्श से चुनें (Or Tap to Answer)</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">चित्र देखकर दबाएं</span>
+</div>
+<!-- Quick-tap Response Grid -->
+<div class="grid grid-cols-2 gap-space-xs">
+<!-- Option 1: Manda Agni / Appetite -->
+<button class="w-full min-h-[4.5rem] bg-surface-container-lowest rounded-xl p-space-sm shadow-sm active:scale-[0.98] text-left flex items-center gap-space-xs transition-colors hover:bg-surface-container-low" type="button">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center flex-shrink-0 text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[28px]">restaurant_menu</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface font-bold leading-tight">भूख कम लगना</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Manda Agni (Low Appetite)</span>
+</div>
+</button>
+<!-- Option 2: Headache / Chakkar -->
+<button class="w-full min-h-[4.5rem] bg-surface-container-lowest rounded-xl p-space-sm shadow-sm active:scale-[0.98] text-left flex items-center gap-space-xs transition-colors hover:bg-surface-container-low" type="button">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center flex-shrink-0 text-on-secondary-container">
+<span class="material-symbols-outlined text-[28px]">sentiment_dissatisfied</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface font-bold leading-tight">सिर दर्द / चक्कर</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Headache / Dizziness</span>
+</div>
+</button>
+<!-- Option 3: Excess Thirst -->
+<button class="w-full min-h-[4.5rem] bg-surface-container-lowest rounded-xl p-space-sm shadow-sm active:scale-[0.98] text-left flex items-center gap-space-xs transition-colors hover:bg-surface-container-low" type="button">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[28px]">water_drop</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface font-bold leading-tight">प्यास ज्यादा लगना</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Trishna (Excess Thirst)</span>
+</div>
+</button>
+<!-- Option 4: Chest Heaviness -->
+<button class="w-full min-h-[4.5rem] bg-surface-container-lowest rounded-xl p-space-sm shadow-sm active:scale-[0.98] text-left flex items-center gap-space-xs transition-colors hover:bg-surface-container-low" type="button">
+<div class="w-12 h-12 rounded-xl bg-error-container flex items-center justify-center flex-shrink-0 text-on-error-container">
+<span class="material-symbols-outlined text-[28px]">vital_signs</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface font-bold leading-tight">छाती में भारीपन</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Chest Heaviness (Uras)</span>
+</div>
+</button>
+</div>
+</div>
+<!-- AYUSH Prakriti Diagnostic Mini Sparkline / Quick Insight Tile -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[22px]">self_improvement</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface">प्रकृति आकलन (Prakriti Profile)</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed font-code-data text-label-sm px-1.5 py-0.2 rounded font-bold">Vata-Pitta</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dashavidha: Koshtha Madhyama • Agni Tikshna</p>
+</div>
+</div>
+<div class="flex items-end gap-1 h-6">
+<div class="w-2 bg-primary h-6 rounded-t"></div>
+<div class="w-2 bg-secondary h-4 rounded-t"></div>
+<div class="w-2 bg-surface-container-highest h-2 rounded-t"></div>
+</div>
+</div>
+<!-- Bhashini Language Switcher Strip -->
+<div class="w-full flex items-center justify-between bg-surface-container-low rounded-xl px-space-sm py-2">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">translate</span>
+<span class="font-label-sm text-label-sm">भाषा चुनें:</span>
+</div>
+<div class="flex items-center gap-1 overflow-x-auto">
+<button class="px-2.5 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-xs font-bold" type="button">हिन्दी</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm hover:bg-surface-container" type="button">English</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm hover:bg-surface-container" type="button">मराठी</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm hover:bg-surface-container" type="button">தமிழ்</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm hover:bg-surface-container" type="button">বাংলা</button>
+</div>
+</div>
+<!-- High-Accessible Push-to-Talk Floating Command Dock -->
+<div class="w-full pt-2 flex flex-col items-center">
+<div class="w-full bg-surface-container-lowest rounded-2xl p-space-sm shadow-xl flex flex-col items-center gap-2">
+<!-- Huge Accessible Microphone Button -->
+<button aria-label="Push to Talk" class="w-full h-16 rounded-xl bg-primary hover:bg-primary-container text-on-primary flex items-center justify-center gap-space-sm shadow-md active:scale-[0.98] transition-all group" id="talkButton" type="button">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px] text-primary-fixed">mic</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-headline-sm text-headline-sm leading-tight text-on-primary font-bold">बोलने के लिए दबाएं (Tap to Speak)</span>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">Bhashini AI Automatic Speech Recognition</span>
+</div>
+</button>
+<div class="flex items-center justify-between w-full px-2 pt-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">hearing</span>
+<span class="font-label-sm text-label-sm">Direct Ayush AI Transcription</span>
+</div>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:underline flex items-center gap-0.5" type="button">
+<span>Manual Type</span>
+<span class="material-symbols-outlined text-[14px]">keyboard</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const talkBtn = document.getElementById('talkButton');
+    if (talkBtn) {
+      talkBtn.addEventListener('click', function() {
+        talkBtn.classList.toggle('bg-error');
+        talkBtn.classList.toggle('bg-primary');
+        const label = talkBtn.querySelector('.font-headline-sm');
+        if (label) {
+          if (talkBtn.classList.contains('bg-error')) {
+            label.innerText = "सुन रहे हैं... (Listening Now)";
+          } else {
+            label.innerText = "बोलने के लिए दबाएं (Tap to Speak)";
+          }
+        }
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-bold"><div class="flex justify-around items-center h-20 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-14 rounded-xl transition-colors active:scale-95 text-primary font-bold" data-path="intake-and-voice" href="#"><span class="material-symbols-outlined text-[24px]">mic</span><span class="font-label-sm text-label-sm text-center">Intake</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-14 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="smart-ocr-scan" href="#"><span class="material-symbols-outlined text-[24px]">document_scanner</span><span class="font-label-sm text-label-sm text-center">OCR Scan</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-14 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="clinical-summary" href="#"><span class="material-symbols-outlined text-[24px]">clinical_notes</span><span class="font-label-sm text-label-sm text-center">Summary</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-14 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="abdm-and-consent" href="#"><span class="material-symbols-outlined text-[24px]">verified_user</span><span class="font-label-sm text-label-sm text-center">ABDM</span></a></div></nav></body></html>
