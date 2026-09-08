@@ -1,0 +1,23 @@
+# Module B: Medical Document Digitization (MediKiosk)
+# Core requirements for OCR and Structured Clinical Extraction
+
+# Data Modeling & Validation
+pydantic>=2.7.0
+
+# Image Ingestion & Preprocessing
+Pillow>=10.2.0
+
+# Cloud OCR Engines
+google-cloud-vision>=3.7.0
+requests>=2.31.0
+
+# LLM Structured Clinical Entity Extraction
+google-genai>=0.1.0
+openai>=1.20.0
+
+# Optional Local / Offline ML Models (for TrOCR & EasyOCR local inference)
+# Uncomment below if deploying with local GPU/CPU model inference:
+# easyocr>=1.7.2
+# transformers>=4.40.0
+# torch>=2.2.0
+# torchvision>=0.17.0
