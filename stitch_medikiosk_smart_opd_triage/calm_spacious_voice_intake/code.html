@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>MediKiosk Smart OPD - Senior Friendly Voice Intake</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#FAFBF7;color:#0b1f18;font-family:'Plus Jakarta Sans',sans-serif;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 25px -5px rgba(30, 107, 82, 0.4), 0 0 0 0 rgba(140, 213, 183, 0.5); }
+  50% { transform: scale(1.02); box-shadow: 0 14px 30px -4px rgba(30, 107, 82, 0.5), 0 0 0 10px rgba(140, 213, 183, 0); }
+}
+.animate-gentle-mic {
+  animation: gentle-pulse 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-tertiary-fixed-variant": "#00513b",
+        "on-background": "#0b1f18",
+        "secondary-fixed": "#ffdcc3",
+        "primary-fixed-dim": "#8cd5b7",
+        "on-primary": "#ffffff",
+        "surface-variant": "#d0e8dc",
+        "secondary-container": "#fe932c",
+        "on-secondary": "#ffffff",
+        "primary-container": "#1e6b52",
+        "error-container": "#ffdad6",
+        "tertiary-fixed": "#98f5ce",
+        "on-secondary-container": "#663500",
+        "on-secondary-fixed-variant": "#6e3900",
+        "primary": "#00523c",
+        "on-primary-fixed": "#002116",
+        "on-secondary-fixed": "#2f1500",
+        "inverse-primary": "#8cd5b7",
+        "outline-variant": "#bfc9c2",
+        "surface-container-low": "#f2f8f3",
+        "on-primary-fixed-variant": "#00513b",
+        "on-tertiary-fixed": "#002116",
+        "surface-container": "#e7f3eb",
+        "surface-container-lowest": "#ffffff",
+        "primary-fixed": "#a7f2d2",
+        "on-surface-variant": "#3f4944",
+        "on-tertiary": "#ffffff",
+        "tertiary": "#00513b",
+        "on-tertiary-container": "#8eebc4",
+        "surface-container-highest": "#d8ebd5",
+        "surface-tint": "#1d6a51",
+        "background": "#FAFBF7",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#20342c",
+        "surface-dim": "#d9e8dd",
+        "surface-bright": "#FAFBF7",
+        "on-surface": "#0b1f18",
+        "surface": "#FAFBF7",
+        "surface-container-high": "#deede2",
+        "secondary": "#904d00",
+        "secondary-fixed-dim": "#ffb77d",
+        "on-primary-container": "#9ee9c9",
+        "tertiary-container": "#006c4f",
+        "tertiary-fixed-dim": "#7bd8b2",
+        "outline": "#6f7974",
+        "inverse-on-surface": "#dff6ea",
+        "on-error": "#ffffff",
+        "error": "#ba1a1a"
+      },
+      borderRadius: {
+        "DEFAULT": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "2.5rem",
+        "3xl": "3rem",
+        "full": "9999px"
+      },
+      fontFamily: {
+        sans: ["Plus Jakarta Sans", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"]
+      }
+    }
+  }
+};
+</script><style>
+  body {
+    min-height: max(884px, 100dvh);
+  }
+</style>
+</head><body class="bg-background text-on-surface flex flex-col min-h-screen antialiased"><header class="fixed top-0 w-full z-50 bg-[#FAFBF7]/90 backdrop-blur-xl border-b border-surface-container pt-safe"><div class="px-4 py-3 flex flex-col gap-2"><div class="flex items-center justify-between"><div class="flex items-center gap-2.5"><div class="w-11 h-11 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-[24px]">local_hospital</span></div><div><div class="flex items-center gap-1.5"><span class="font-bold text-xl text-primary tracking-tight">आयुष MediKiosk</span><span class="font-mono text-xs bg-surface-container px-2 py-0.5 rounded-full text-primary font-semibold">सरल मोड</span></div><p class="text-xs text-on-surface-variant font-medium">वरिष्ठ नागरिक सहायता (Elder Care Intake)</p></div></div><div class="flex items-center gap-2"><button aria-label="Bhashini Voice Help Active" class="h-10 px-3 rounded-full bg-surface-container-low border border-primary/20 flex items-center gap-1.5 text-primary font-bold text-sm shadow-xs"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span><span class="material-symbols-outlined text-[18px]">volume_up</span><span>आवाज चालू</span></button><div class="w-10 h-10 rounded-full bg-surface-container text-primary flex items-center justify-center font-bold text-base border border-surface-container-high"><span class="material-symbols-outlined text-[20px]">elderly</span></div></div></div><!-- Friendly Patient Status Pill --><div class="flex items-center justify-between bg-emerald-50/80 border border-emerald-200/60 rounded-full px-3.5 py-1.5"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span><span class="text-xs sm:text-sm font-semibold text-emerald-900">✓ सब सुरक्षित है • डॉक्टर केबिन #4 के लिए</span></div><span class="text-xs font-bold text-primary font-mono bg-white px-2 py-0.5 rounded-full border border-emerald-200">पर्ची #42</span></div></div></header><main class="flex-1 flex flex-col relative w-full pt-32 pb-32 px-5 bg-background max-w-lg mx-auto"><div class="flex flex-col w-full gap-6"><!-- Doctor Voice Prompt Card --><div class="w-full bg-white rounded-3xl p-6 shadow-sm border border-surface-container flex flex-col gap-5 relative"><div class="flex items-center justify-between"><div class="inline-flex items-center gap-2 bg-[#fef5ec] text-secondary border border-amber-200/60 px-3.5 py-1 rounded-full text-xs font-semibold"><span class="material-symbols-outlined text-[16px]">record_voice_over</span><span>सवाल ३ • पाचन स्वास्थ्य</span></div><button aria-label="Listen to Question" class="h-10 px-4 rounded-full bg-primary/10 hover:bg-primary text-primary hover:text-white active:scale-95 transition-all flex items-center gap-2 font-semibold text-xs border border-primary/20" type="button"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">volume_up</span><span>प्रश्न सुनें</span></button></div><div class="flex items-start gap-4"><div class="w-16 h-16 rounded-full bg-emerald-50 border-2 border-primary/20 flex-shrink-0 overflow-hidden shadow-xs flex items-center justify-center"><img alt="Dr. Sharma" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7lI9OP0h65YdbOCo6fEVlEEO6DH6GbfYd-TSb8WrWnK2w5hH3b4KUEvfCwKMDbt_ZxMD-qwB_R6Xa440HrlL-xtqRfFfKFkkQqV9YHFBMwK_vr8yZDQiP1_b-7S_4Kww0j7LAJlkJh6-BrbYSNBLwwkWQQvRvNAKKr2A2bxxdoBS50euTqeKv2sd8Ft9gvm-M3vQiOhBPkFJwo9JhI0DP_HvAYVn51f4w5S_6RcxBXDcaLRJQ1T8-"/></div><div class="flex-1"><h2 class="text-xl sm:text-2xl font-bold text-on-surface leading-snug tracking-tight">नमस्ते! आपको पेट या भूख से जुड़ी क्या परेशानी लग रही है?</h2></div></div></div><!-- Senior Friendly Tap Cards Section --><div class="flex flex-col gap-3.5"><div class="flex items-center justify-between px-1"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[22px]">touch_app</span><h3 class="font-bold text-base text-on-surface">विकल्प चुनें (या नीचे बोलें)</h3></div><span class="text-xs text-on-surface-variant font-medium">एक या अधिक चुनें</span></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"><button class="w-full min-h-[5.25rem] bg-white hover:bg-amber-50/50 border border-amber-200/70 rounded-3xl p-4 shadow-xs active:scale-[0.98] transition-all text-left flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-secondary" type="button"><div class="w-14 h-14 rounded-2xl bg-amber-50 text-[#904d00] flex items-center justify-center flex-shrink-0 text-3xl">🥣</div><div class="flex flex-col min-w-0"><span class="text-base font-bold text-on-surface leading-tight">भूख कम लगना</span><span class="text-xs text-on-surface-variant font-medium mt-1">कम भूख या अपच</span></div></button><button class="w-full min-h-[5.25rem] bg-white hover:bg-emerald-50/50 border border-emerald-200/70 rounded-3xl p-4 shadow-xs active:scale-[0.98] transition-all text-left flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-primary" type="button"><div class="w-14 h-14 rounded-2xl bg-emerald-50 text-primary flex items-center justify-center flex-shrink-0 text-3xl">🌀</div><div class="flex flex-col min-w-0"><span class="text-base font-bold text-on-surface leading-tight">सिर घूमना या दर्द</span><span class="text-xs text-on-surface-variant font-medium mt-1">चक्कर व सिरदर्द</span></div></button><button class="w-full min-h-[5.25rem] bg-white hover:bg-sky-50/50 border border-sky-200/70 rounded-3xl p-4 shadow-xs active:scale-[0.98] transition-all text-left flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-sky-500" type="button"><div class="w-14 h-14 rounded-2xl bg-sky-50 text-sky-800 flex items-center justify-center flex-shrink-0 text-3xl">💧</div><div class="flex flex-col min-w-0"><span class="text-base font-bold text-on-surface leading-tight">ज्यादा प्यास लगना</span><span class="text-xs text-on-surface-variant font-medium mt-1">गला सूखना व प्यास</span></div></button><button class="w-full min-h-[5.25rem] bg-white hover:bg-rose-50/50 border border-rose-200/70 rounded-3xl p-4 shadow-xs active:scale-[0.98] transition-all text-left flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-rose-500" type="button"><div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-800 flex items-center justify-center flex-shrink-0 text-3xl">🫀</div><div class="flex flex-col min-w-0"><span class="text-base font-bold text-on-surface leading-tight">छाती में भारीपन</span><span class="text-xs text-on-surface-variant font-medium mt-1">बेचैनी या जकड़न</span></div></button></div></div><!-- Language Quick Bar (Airy & Clean) --><div class="w-full bg-white rounded-2xl p-2.5 flex items-center justify-between border border-surface-container shadow-xs"><span class="text-xs font-semibold text-on-surface-variant flex items-center gap-1.5 pl-1"><span class="material-symbols-outlined text-[16px]">translate</span> भाषा</span><div class="flex items-center gap-1.5 overflow-x-auto"><button class="px-3.5 py-1 rounded-full bg-primary text-on-primary font-bold text-xs shadow-xs" type="button">हिन्दी</button><button class="px-3.5 py-1 rounded-full bg-surface-container-low text-on-surface font-semibold text-xs hover:bg-surface-container transition-all" type="button">English</button><button class="px-3.5 py-1 rounded-full bg-surface-container-low text-on-surface font-semibold text-xs hover:bg-surface-container transition-all" type="button">मराठी</button><button class="px-3.5 py-1 rounded-full bg-surface-container-low text-on-surface font-semibold text-xs hover:bg-surface-container transition-all" type="button">বাংলা</button></div></div><!-- Spacious & Calming Floating Mic Dock --><div class="w-full pt-2"><div class="w-full bg-white/90 backdrop-blur-md border border-primary/20 rounded-3xl p-4 sm:p-5 shadow-lg flex flex-col items-center gap-3"><button aria-label="Tap and Speak" class="w-full min-h-[72px] rounded-2xl bg-primary hover:bg-primary-container text-on-primary flex items-center justify-center gap-4 px-5 shadow-md active:scale-[0.98] transition-all animate-gentle-mic group" id="seniorTalkBtn" type="button"><div class="w-13 h-13 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform"><span class="material-symbols-outlined text-[32px] text-white" style="font-variation-settings: 'FILL' 1;">mic</span></div><div class="flex flex-col text-left"><span class="text-lg sm:text-xl font-bold text-white leading-tight">बोलकर बताएं</span><span class="text-xs text-emerald-100 font-medium mt-0.5">माइक दबाएं और अपनी आवाज में कहें</span></div></button><div class="flex items-center justify-between w-full px-2 pt-0.5 text-xs text-on-surface-variant font-medium"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>AI आवाज सुनने के लिए तैयार है</span><button class="hover:text-primary transition-colors flex items-center gap-1 font-semibold text-primary" type="button"><span>लिखकर बताएं</span><span class="material-symbols-outlined text-[14px]">keyboard</span></button></div></div></div></div><script>(function() { const talkBtn = document.getElementById('seniorTalkBtn'); if (talkBtn) { talkBtn.addEventListener('click', function() { talkBtn.classList.toggle('bg-error'); talkBtn.classList.toggle('bg-primary'); const mainLabel = talkBtn.querySelector('span.text-lg, span.text-xl'); const subLabel = talkBtn.querySelector('.text-emerald-100'); if (mainLabel && subLabel) { if (talkBtn.classList.contains('bg-error')) { mainLabel.innerText = "हम सुन रहे हैं... बोलिए"; subLabel.innerText = "बात पूरी होने पर फिर से दबाएं"; } else { mainLabel.innerText = "बोलकर बताएं"; subLabel.innerText = "माइक दबाएं और अपनी आवाज में कहें"; } } }); } })();</script></main><!-- Simple Senior-Friendly Bottom Navigation --><nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#FAFBF7]/95 backdrop-blur-xl border-t border-surface-container shadow-[0_-4px_16px_rgba(0,0,0,0.05)]" data-active-classes="text-primary font-bold"><div class="flex justify-around items-center h-20 px-2 max-w-lg mx-auto"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-2xl bg-surface-container text-primary font-bold transition-all active:scale-95 shadow-xs" data-path="intake-and-voice" href="#"><span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">mic</span><span class="text-xs font-bold">आवाज (Voice)</span></a><a class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-2xl text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="smart-ocr-scan" href="#"><span class="material-symbols-outlined text-[26px]">document_scanner</span><span class="text-xs font-medium">पर्ची (Scan)</span></a><a class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-2xl text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="clinical-summary" href="#"><span class="material-symbols-outlined text-[26px]">clinical_notes</span><span class="text-xs font-medium">विवरण (Summary)</span></a><a class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-2xl text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="abdm-and-consent" href="#"><span class="material-symbols-outlined text-[26px]">verified_user</span><span class="text-xs font-medium">ABHA कार्ड</span></a></div></nav></body></html>
