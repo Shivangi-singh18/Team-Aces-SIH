@@ -48,10 +48,11 @@ MEDIKIOSK_MOCK_MODE=false
 
 | Platform / Environment | Base URL | Note |
 |---|---|---|
-| **Android Studio Emulator** | `http://10.0.2.2:8000` | Android loopback to host machine |
+| **Production Cloud (Render)** | `https://team-aces-sih.onrender.com` | Deployed live backend (Auto-SSL) |
+| **Android Studio Emulator** | `http://10.0.2.2:8000` | Android loopback to local machine |
 | **iOS Simulator** | `http://localhost:8000` | Shares macOS localhost network |
 | **Physical Phone (Wi-Fi)** | `http://<YOUR_PC_IP>:8000` | Phone and PC must be on same Wi-Fi |
-| **Web Browser / Kiosk** | `http://localhost:8000` | Direct local execution |
+| **Web Browser / Kiosk** | `https://team-aces-sih.onrender.com` | Production live endpoint (or `http://localhost:8000` locally) |
 
 *CORS policy is pre-configured with `allow_origins=["*"]` to ensure zero network friction.*
 
@@ -204,7 +205,8 @@ Use this mapping table to bind the backend JSON response fields directly to your
 import axios from 'axios';
 import { Platform } from 'react-native';
 
-const BASE_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8000' : 'http://localhost:8000';
+// Use production Render URL or fallback to localhost for offline dev
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://team-aces-sih.onrender.com';
 
 export interface ClinicalResponse {
   chief_complaints: string[];
@@ -267,7 +269,7 @@ Future<Map<String, dynamic>> submitClinicalIntake({
 
 ### Direct cURL Test
 ```bash
-curl -X POST "http://localhost:8000/api/v1/llm/process" \
+curl -X POST "https://team-aces-sih.onrender.com/api/v1/llm/process" \
      -H "Content-Type: application/json" \
      -d '{"voice_transcript": "Severe radiating chest pain and breathlessness"}'
 ```

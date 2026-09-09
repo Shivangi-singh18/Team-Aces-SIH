@@ -317,8 +317,13 @@ The frontend consent and routing screen in `stitch_medikiosk_smart_opd_triage/ca
 ### Client Integration Code:
 
 ```javascript
-// Configuration
-const MODULE_D_BASE_URL = "http://localhost:8003/api/v1";
+// Configuration (Production Render Cloud or Local Dev)
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://localhost:8000/api/v1"
+  : "https://team-aces-sih.onrender.com/api/v1";
+const MODULE_D_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://localhost:8003/api/v1"
+  : "https://team-aces-sih.onrender.com/api/v1";
 
 // 1. Authenticate Patient via ABHA OTP
 async function loginWithABHA(abhaId, otp = "123456") {

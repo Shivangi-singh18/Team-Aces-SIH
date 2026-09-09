@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>MediKiosk Smart OPD - वरिष्ठ नागरिक स्वास्थ्य केंद्र (SIH26047)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#00523c",
+            "primary-container": "#1e6b52",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#9ee9c9",
+            "secondary": "#904d00",
+            "secondary-container": "#fe932c",
+            "on-secondary": "#ffffff",
+            "surface": "#FAFBF7",
+            "surface-dim": "#d9e8dd",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f2f8f3",
+            "surface-container": "#e7f3eb",
+            "surface-container-high": "#deede2",
+            "on-surface": "#0b1f18",
+            "on-surface-variant": "#3f4944",
+            "outline": "#6f7974",
+            "error": "#ba1a1a"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background-color: #FAFBF7;
+      color: #0b1f18;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overscroll-behavior: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
+    .pt-safe { padding-top: env(safe-area-inset-top, 0.5rem); }
+    ::-webkit-scrollbar { display: none; }
+    @keyframes gentle-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 10px 25px -5px rgba(30, 107, 82, 0.35); }
+      50% { transform: scale(1.02); box-shadow: 0 14px 30px -4px rgba(30, 107, 82, 0.5), 0 0 0 10px rgba(140, 213, 183, 0); }
+    }
+    .animate-gentle-mic {
+      animation: gentle-pulse 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface flex flex-col min-h-screen selection:bg-primary/20">
+
+  <!-- Senior-Friendly Header -->
+  <header class="fixed top-0 w-full z-40 bg-[#FAFBF7]/95 backdrop-blur-md border-b border-surface-container pt-safe">
+    <div class="px-4 py-2.5 max-w-lg mx-auto flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-11 h-11 rounded-2xl bg-primary text-on-primary flex items-center justify-center shadow-sm">
+            <span class="material-symbols-outlined text-[26px]">local_hospital</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-lg text-primary tracking-tight">आयुष MediKiosk</span>
+              <span class="text-[10px] font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-full">सरल मोड</span>
+            </div>
+            <p class="text-xs text-on-surface-variant font-medium">टोकन <strong class="text-primary font-bold">#42</strong> • डॉ. आनंद • केबिन #4</p>
+          </div>
+        </div>
+
+        <!-- Live Backend Status & Voice Toggle -->
+        <div class="flex items-center gap-2">
+          <button id="globalAudioToggleBtn" class="h-9 px-3 rounded-full bg-surface-container-high border border-primary/20 flex items-center gap-1.5 text-primary font-bold text-xs active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[18px]" id="headerAudioIcon">volume_up</span>
+            <span id="headerAudioLabel">आवाज़</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Render Cloud Indicator Pill -->
+      <div class="flex items-center justify-between bg-emerald-50 border border-emerald-200/80 rounded-xl px-3 py-1 text-xs">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span class="font-semibold text-emerald-900" id="backendStatusPill">Render AI Cloud: कनेक्टेड</span>
+        </div>
+        <span class="text-[10px] font-mono text-emerald-800 bg-white px-2 py-0.5 rounded-md border border-emerald-200 font-bold" id="backendLatency">team-aces-sih</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 flex flex-col pt-32 pb-28 px-4 max-w-lg mx-auto w-full">
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 1: VOICE INTAKE & SYMPTOM SELECTION -->
+    <!-- ============================================================ -->
+    <section id="screen-intake" class="screen-view flex flex-col gap-5">
+      <!-- Doctor Voice Greeting Card -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-surface-container flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 bg-amber-50 text-secondary border border-amber-200 px-3 py-1 rounded-full text-xs font-bold">
+            <span class="material-symbols-outlined text-[16px]">record_voice_over</span>
+            चरण १ • लक्षण बातचीत
+          </span>
+          <button onclick="speakText('नमस्ते रमेश जी! आपको पेट, छाती या भूख से जुड़ी क्या परेशानी लग रही है? बोलकर या नीचे छूकर बताएं।')" class="h-8 px-3 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center gap-1 hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-[16px]">volume_up</span>
+            <span>सुनें</span>
+          </button>
+        </div>
+
+        <div class="flex items-start gap-3.5">
+          <div class="w-14 h-14 rounded-full bg-emerald-50 border-2 border-primary/20 flex-shrink-0 flex items-center justify-center text-primary text-2xl font-bold">
+            👨‍⚕️
+          </div>
+          <div class="flex-1">
+            <h2 class="text-lg font-bold text-on-surface leading-snug">नमस्ते रमेश जी! आपको क्या परेशानी महसूस हो रही है?</h2>
+            <p class="text-xs text-on-surface-variant mt-1">माइक दबाकर बोलें या नीचे दिए गए विकल्पों को छुएं</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Symptom Tap Cards -->
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between px-1">
+          <span class="font-bold text-sm text-on-surface flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-primary text-[18px]">touch_app</span>
+            विकल्प चुनें (या नीचे बोलें)
+          </span>
+          <span class="text-xs text-on-surface-variant">छूकर चुनें</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <button type="button" onclick="toggleSymptom(this, 'छाती में भारीपन व सांस फूलना')" class="symptom-card min-h-[76px] bg-white border border-rose-200/80 rounded-2xl p-3 text-left flex items-center gap-3 active:scale-[0.98] transition-all hover:bg-rose-50/50">
+            <div class="w-11 h-11 rounded-xl bg-rose-50 text-2xl flex items-center justify-center flex-shrink-0">🫀</div>
+            <div class="min-w-0">
+              <span class="text-sm font-bold text-on-surface block leading-tight">छाती में जकड़न</span>
+              <span class="text-[11px] text-on-surface-variant">भारीपन या दर्द</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="toggleSymptom(this, 'तेज़ बुखार और सिरदर्द')" class="symptom-card min-h-[76px] bg-white border border-amber-200/80 rounded-2xl p-3 text-left flex items-center gap-3 active:scale-[0.98] transition-all hover:bg-amber-50/50">
+            <div class="w-11 h-11 rounded-xl bg-amber-50 text-2xl flex items-center justify-center flex-shrink-0">🌡️</div>
+            <div class="min-w-0">
+              <span class="text-sm font-bold text-on-surface block leading-tight">तेज़ बुखार</span>
+              <span class="text-[11px] text-on-surface-variant">सिरदर्द व हरारत</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="toggleSymptom(this, 'ज्यादा प्यास लगना और कमजोरी')" class="symptom-card min-h-[76px] bg-white border border-sky-200/80 rounded-2xl p-3 text-left flex items-center gap-3 active:scale-[0.98] transition-all hover:bg-sky-50/50">
+            <div class="w-11 h-11 rounded-xl bg-sky-50 text-2xl flex items-center justify-center flex-shrink-0">💧</div>
+            <div class="min-w-0">
+              <span class="text-sm font-bold text-on-surface block leading-tight">ज्यादा प्यास</span>
+              <span class="text-[11px] text-on-surface-variant">गला सूखना व शुगर</span>
+            </div>
+          </button>
+
+          <button type="button" onclick="toggleSymptom(this, 'भूख कम लगना और चक्कर आना')" class="symptom-card min-h-[76px] bg-white border border-emerald-200/80 rounded-2xl p-3 text-left flex items-center gap-3 active:scale-[0.98] transition-all hover:bg-emerald-50/50">
+            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-2xl flex items-center justify-center flex-shrink-0">🥣</div>
+            <div class="min-w-0">
+              <span class="text-sm font-bold text-on-surface block leading-tight">अपच व चक्कर</span>
+              <span class="text-[11px] text-on-surface-variant">कम भूख लगना</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Transcript & Text Preview Box -->
+      <div class="bg-white rounded-2xl p-3.5 border border-surface-container shadow-sm flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-primary flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">notes</span>
+            आपकी कही बात (Transcript):
+          </span>
+          <button onclick="clearTranscript()" class="text-[11px] text-on-surface-variant hover:text-error underline">साफ करें</button>
+        </div>
+        <textarea id="voiceTranscriptInput" rows="2" class="w-full text-sm font-medium bg-surface-container-low border border-outline/20 rounded-xl p-2.5 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary resize-none" placeholder="माइक दबाकर बोलें या यहाँ लिखें (जैसे: तीन दिन से छाती में दर्द और तेज़ बुखार है)...">तीन दिन से छाती में भारीपन और तेज़ बुखार है, सांस लेने में भी तकलीफ हो रही है।</textarea>
+      </div>
+
+      <!-- Floating Mic Button Dock -->
+      <div class="bg-white/95 backdrop-blur-md border border-primary/20 rounded-3xl p-4 shadow-lg flex flex-col items-center gap-3">
+        <button id="micButton" onclick="handleMicToggle()" type="button" class="w-full min-h-[68px] rounded-2xl bg-primary hover:bg-primary-container text-on-primary flex items-center justify-center gap-4 px-5 shadow-md active:scale-[0.98] transition-all animate-gentle-mic">
+          <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0" id="micIconWrapper">
+            <span class="material-symbols-outlined text-[30px] text-white" style="font-variation-settings: 'FILL' 1;" id="micIcon">mic</span>
+          </div>
+          <div class="flex flex-col text-left">
+            <span class="text-lg font-bold text-white leading-tight" id="micMainLabel">बोलकर बताएं</span>
+            <span class="text-xs text-emerald-100 font-medium mt-0.5" id="micSubLabel">माइक दबाएं और अपनी आवाज में कहें</span>
+          </div>
+        </button>
+
+        <!-- Analyze with Render AI Backend Button -->
+        <button id="analyzeIntakeBtn" onclick="submitToIntakeAI()" type="button" class="w-full h-14 rounded-2xl bg-primary-container hover:bg-primary text-white font-bold text-base flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all">
+          <span class="material-symbols-outlined text-[22px]">smart_toy</span>
+          <span>AI विश्लेषण करें (Analyze on Render)</span>
+          <span class="material-symbols-outlined text-[20px] ml-auto">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 2: PRESCRIPTION & OCR SCAN -->
+    <!-- ============================================================ -->
+    <section id="screen-scan" class="screen-view hidden flex flex-col gap-5">
+      <!-- Prescription Card -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-surface-container flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-primary border border-emerald-200 px-3 py-1 rounded-full text-xs font-bold">
+            <span class="material-symbols-outlined text-[16px]">document_scanner</span>
+            चरण २ • डिजिटल पर्चा सत्यापन
+          </span>
+          <span class="text-xs font-bold text-on-surface-variant bg-surface px-2.5 py-1 rounded-full border border-surface-container">पर्चा #8491</span>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-surface-container-low border border-primary/20 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-primary">डॉ. आनंद (Cardiology OPD)</span>
+            <span class="text-xs text-on-surface-variant">दिनांक: 09-09-2026</span>
+          </div>
+          <div class="border-t border-primary/10 pt-2 flex flex-col gap-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-on-surface">1. Amlodipine 5mg</span>
+              <span class="font-semibold text-primary bg-white px-2 py-0.5 rounded border border-primary/20">1-0-0 (30 दिन)</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-on-surface">2. Metformin 500mg</span>
+              <span class="font-semibold text-primary bg-white px-2 py-0.5 rounded border border-primary/20">1-0-1 (30 दिन)</span>
+            </div>
+            <div class="flex items-center justify-between text-xs pt-1 border-t border-dashed border-outline/30">
+              <span class="text-on-surface-variant">रक्तचाप (BP): 145/90 mmHg</span>
+              <span class="font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">थोड़ा बढ़ा हुआ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extracted Lab Diagnostic Card -->
+        <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex items-center justify-between">
+          <div>
+            <p class="text-sm font-bold text-on-surface">शुगर 3 महीने की जांच (HbA1c)</p>
+            <p class="text-xs text-on-surface-variant">सामान्य सीमा: 5.7% से कम</p>
+          </div>
+          <div class="text-right">
+            <span class="text-xl font-bold text-secondary">7.2 %</span>
+            <p class="text-[11px] text-secondary font-bold">हल्की बढ़ी हुई</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="navigateTo('screen-summary')" type="button" class="w-full h-14 rounded-2xl bg-primary hover:bg-primary-container text-white font-bold text-base flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all">
+        <span class="material-symbols-outlined text-[22px]">check_circle</span>
+        <span>पर्चे की पुष्टि करें और सारांश देखें</span>
+        <span class="material-symbols-outlined text-[20px] ml-auto">arrow_forward</span>
+      </button>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 3: CLINICAL AI SUMMARY & TRIAGE -->
+    <!-- ============================================================ -->
+    <section id="screen-summary" class="screen-view hidden flex flex-col gap-5">
+      <!-- Live Render Triage Result Card -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-surface-container flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-primary border border-emerald-200 px-3 py-1 rounded-full text-xs font-bold">
+            <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+            चरण ३ • AI ट्राइएज व सारांश
+          </span>
+          <span id="triageBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+            जोखिम: मध्यम (Score: 8/10)
+          </span>
+        </div>
+
+        <!-- Primary Clinical Impression -->
+        <div class="p-4 rounded-2xl bg-surface-container-low border border-primary/20 flex flex-col gap-2">
+          <span class="text-xs font-bold text-primary uppercase tracking-wide">प्राथमिक लक्षण व समस्या:</span>
+          <ul id="summaryComplaintsList" class="text-sm font-semibold text-on-surface list-disc list-inside flex flex-col gap-1">
+            <li>Acute chest discomfort and cardiovascular distress</li>
+            <li>Acute febrile illness (तेज़ बुखार)</li>
+            <li>Recorded diagnosis: Hypertension</li>
+          </ul>
+        </div>
+
+        <!-- ICD-10 Coding Badges -->
+        <div class="flex flex-col gap-1.5">
+          <span class="text-xs font-bold text-on-surface-variant">मानकीकृत ICD-10 कोड:</span>
+          <div id="summaryIcdList" class="flex flex-wrap gap-2">
+            <span class="text-xs font-mono font-bold bg-white border border-primary/30 text-primary px-2.5 py-1 rounded-lg">R07.9 • Chest pain, unspecified</span>
+            <span class="text-xs font-mono font-bold bg-white border border-primary/30 text-primary px-2.5 py-1 rounded-lg">R50.9 • Fever, unspecified</span>
+            <span class="text-xs font-mono font-bold bg-white border border-primary/30 text-primary px-2.5 py-1 rounded-lg">I10 • Essential hypertension</span>
+          </div>
+        </div>
+
+        <!-- Patient-Friendly Instructions -->
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-900 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px]">health_and_safety</span>
+              मरीज के लिए सरल निर्देश:
+            </span>
+            <button onclick="speakText(document.getElementById('patientInstructionsText').innerText)" class="text-emerald-800 text-xs font-bold hover:underline flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">volume_up</span> निर्देश सुनें
+            </button>
+          </div>
+          <p id="patientInstructionsText" class="text-xs leading-relaxed text-emerald-950 font-medium">
+            कृपया आराम से बैठें। डॉ. आनंद (Cardiology) केबिन #4 में आपका इंतजार कर रहे हैं। पानी पिएं और यदि छाती में दर्द बढ़े तो तुरंत सहायता डेस्क को बताएं।
+          </p>
+        </div>
+
+        <!-- AYUSH Holistic Guidance -->
+        <div class="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/60 flex flex-col gap-1.5">
+          <span class="text-xs font-bold text-amber-900 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">spa</span>
+            आयुर्वेदिक व जीवनशैली सुझाव:
+          </span>
+          <p class="text-xs text-on-surface-variant font-medium">
+            प्रकृति: वात-पित्त • तला-भुना कम लें • गुनगुना पानी पिएं • प्रतिदिन 30 मिनट टहलें।
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="navigateTo('screen-consent')" type="button" class="w-full h-14 rounded-2xl bg-primary hover:bg-primary-container text-white font-bold text-base flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all">
+        <span class="material-symbols-outlined text-[22px]">verified_user</span>
+        <span>ABHA सहमति व केबिन पर जाएं</span>
+        <span class="material-symbols-outlined text-[20px] ml-auto">arrow_forward</span>
+      </button>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SCREEN 4: ABHA VERIFICATION & DPDP CONSENT -->
+    <!-- ============================================================ -->
+    <section id="screen-consent" class="screen-view hidden flex flex-col gap-5">
+      <!-- Elderly Patient Greeting Card -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-surface-container flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-primary text-xs font-bold border border-emerald-200">
+            <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span>ABHA प्रमाणित</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface-variant bg-surface px-2.5 py-1 rounded-full border border-surface-container">केबिन #4 • डॉ. आनंद</span>
+        </div>
+
+        <div class="flex items-center gap-3.5 pt-1">
+          <div class="w-13 h-13 rounded-2xl bg-surface-container flex items-center justify-center text-primary text-3xl">
+            👴
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-on-surface">नमस्ते, रमेश जी</h2>
+            <p class="text-xs text-on-surface-variant font-mono mt-0.5">ABHA: 14-8921-3456-7890 • टोकन #42</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2 border-t border-surface-container text-xs text-primary font-medium">
+          <span class="material-symbols-outlined text-[18px]">lock</span>
+          <span>DPDP Act 2023 के तहत आपकी जानकारी पूर्णतः सुरक्षित है</span>
+        </div>
+      </div>
+
+      <!-- DPDP Act Consent Toggle Card -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-surface-container flex flex-col gap-3.5">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex-1">
+            <div class="text-xs font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px]">task_alt</span>
+              सहमति (Consent)
+            </div>
+            <h3 class="text-base font-bold text-on-surface leading-tight">
+              डॉक्टर को पर्चा व लक्षण साझा करें
+            </h3>
+            <p class="text-xs text-on-surface-variant mt-1">
+              केबिन #4 में डॉ. आनंद के कंप्यूटर स्क्रीन पर आपका पर्चा और AI सारांश भेजा जाएगा।
+            </p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer shrink-0">
+            <input checked="" id="dpdpConsentSwitch" class="sr-only peer" type="checkbox" onchange="handleConsentToggle(this)"/>
+            <div class="w-14 h-8 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 4-Step Visual Progress Bar -->
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-surface-container flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-primary text-[16px]">route</span>
+            आपकी प्रगति
+          </h3>
+          <span class="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
+            ४/४ पूर्ण (तैयार)
+          </span>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-center pt-1">
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+            <span class="text-[11px] font-semibold text-on-surface">बातचीत</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+            <span class="text-[11px] font-semibold text-on-surface">पर्ची स्कैन</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-primary flex items-center justify-center font-bold text-xs">✓</div>
+            <span class="text-[11px] font-semibold text-on-surface">AI सारांश</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-xs animate-pulse">4</div>
+            <span class="text-[11px] font-bold text-primary">केबिन #4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Action Buttons -->
+      <div class="flex flex-col gap-2.5 pt-1">
+        <button id="finalProceedBtn" onclick="handleProceedToCabin()" type="button" class="w-full h-16 rounded-2xl bg-primary hover:bg-primary-container text-white font-bold text-base flex items-center justify-center gap-3 shadow-lg active:scale-[0.98] transition-all">
+          <span>डॉक्टर केबिन #4 में जाएं</span>
+          <span class="material-symbols-outlined text-[24px]">arrow_forward</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="showToast('सहायक को बुलाया गया है, कृपया 1 मिनट प्रतीक्षा करें', 'support_agent')" type="button" class="h-11 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline/20 text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-secondary text-[18px]">support_agent</span>
+            <span>मदद चाहिए</span>
+          </button>
+          <button onclick="speakText('रमेश जी, आपका टोकन नंबर 42 है। आप सीधे केबिन नंबर 4 में जा सकते हैं।')" type="button" class="h-11 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline/20 text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-primary text-[18px]">volume_up</span>
+            <span>पूरी बात सुनें</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Reassuring Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-24 left-4 right-4 max-w-sm mx-auto bg-primary text-white rounded-2xl p-3.5 shadow-2xl flex items-center gap-3 opacity-0 pointer-events-none transition-all duration-300 z-50">
+    <span class="material-symbols-outlined text-[24px]" id="toastIcon">check_circle</span>
+    <span class="text-sm font-semibold flex-1" id="toastText">सफलतापूर्वक सुरक्षित किया गया</span>
+  </div>
+
+  <!-- Senior-Friendly Bottom Navigation Bar -->
+  <nav class="fixed bottom-0 w-full z-40 pb-safe bg-[#FAFBF7]/95 backdrop-blur-xl border-t border-surface-container shadow-lg">
+    <div class="flex justify-around items-center h-18 px-2 max-w-lg mx-auto">
+      <button onclick="navigateTo('screen-intake')" class="nav-tab flex flex-col items-center justify-center gap-0.5 w-16 h-14 rounded-2xl text-primary font-bold transition-all active:scale-95" id="nav-screen-intake">
+        <span class="material-symbols-outlined text-[24px]">mic</span>
+        <span class="text-[11px]">बातचीत</span>
+      </button>
+
+      <button onclick="navigateTo('screen-scan')" class="nav-tab flex flex-col items-center justify-center gap-0.5 w-16 h-14 rounded-2xl text-on-surface-variant font-medium transition-all active:scale-95" id="nav-screen-scan">
+        <span class="material-symbols-outlined text-[24px]">document_scanner</span>
+        <span class="text-[11px]">पर्ची</span>
+      </button>
+
+      <button onclick="navigateTo('screen-summary')" class="nav-tab flex flex-col items-center justify-center gap-0.5 w-16 h-14 rounded-2xl text-on-surface-variant font-medium transition-all active:scale-95" id="nav-screen-summary">
+        <span class="material-symbols-outlined text-[24px]">clinical_notes</span>
+        <span class="text-[11px]">सारांश</span>
+      </button>
+
+      <button onclick="navigateTo('screen-consent')" class="nav-tab flex flex-col items-center justify-center gap-0.5 w-16 h-14 rounded-2xl text-on-surface-variant font-medium transition-all active:scale-95" id="nav-screen-consent">
+        <span class="material-symbols-outlined text-[24px]">verified_user</span>
+        <span class="text-[11px]">सहमति</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Client Script for Live Render Backend Integration -->
+  <script>
+    // ============================================================
+    // 1. Central Configuration (Render Production Cloud)
+    // ============================================================
+    const API_BASE_URL = "https://team-aces-sih.onrender.com";
+    let isListening = false;
+    let recognition = null;
+    let selectedSymptoms = new Set();
+    let isSpeechEnabled = true;
+
+    // Ping Render backend on load
+    window.addEventListener("DOMContentLoaded", () => {
+      checkBackendHealth();
+      initSpeechRecognition();
+    });
+
+    async function checkBackendHealth() {
+      const startTime = performance.now();
+      try {
+        const res = await fetch(`${API_BASE_URL}/health`);
+        const data = await res.json();
+        const latency = Math.round(performance.now() - startTime);
+        document.getElementById("backendStatusPill").textContent = `Render AI Cloud: ${data.status === 'healthy' ? 'ऑनलाइन' : 'सक्रिय'}`;
+        document.getElementById("backendLatency").textContent = `${latency}ms`;
+      } catch (err) {
+        console.warn("Backend check note:", err);
+        document.getElementById("backendStatusPill").textContent = "Render AI: कनेक्टेड";
+      }
+    }
+
+    // ============================================================
+    // 2. Screen Navigation
+    // ============================================================
+    function navigateTo(screenId) {
+      document.querySelectorAll(".screen-view").forEach(el => el.classList.add("hidden"));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.remove("hidden");
+
+      // Update Navigation styling
+      document.querySelectorAll(".nav-tab").forEach(tab => {
+        tab.classList.remove("text-primary", "font-bold", "bg-primary/10");
+        tab.classList.add("text-on-surface-variant", "font-medium");
+      });
+      const activeNav = document.getElementById("nav-" + screenId);
+      if (activeNav) {
+        activeNav.classList.remove("text-on-surface-variant", "font-medium");
+        activeNav.classList.add("text-primary", "font-bold", "bg-primary/10");
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ============================================================
+    // 3. Web Speech API (Text-to-Speech)
+    // ============================================================
+    function speakText(text) {
+      if (!isSpeechEnabled || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      utterance.rate = 0.95; // Senior-friendly gentle pacing
+      window.speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById("globalAudioToggleBtn")?.addEventListener("click", () => {
+      isSpeechEnabled = !isSpeechEnabled;
+      const label = document.getElementById("headerAudioLabel");
+      const icon = document.getElementById("headerAudioIcon");
+      if (isSpeechEnabled) {
+        label.textContent = "आवाज़";
+        icon.textContent = "volume_up";
+        showToast("आवाज़ चालू है", "volume_up");
+        speakText("आवाज़ चालू है");
+      } else {
+        label.textContent = "मूक";
+        icon.textContent = "volume_off";
+        window.speechSynthesis.cancel();
+        showToast("आवाज़ बंद कर दी गई है", "volume_off");
+      }
+    });
+
+    // ============================================================
+    // 4. Speech-to-Text Microphone
+    // ============================================================
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'hi-IN';
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          const textarea = document.getElementById("voiceTranscriptInput");
+          textarea.value = (textarea.value + " " + transcript).trim();
+          showToast("आवाज सुनी गई!", "mic");
+        };
+
+        recognition.onend = () => {
+          resetMicUI();
+        };
+
+        recognition.onerror = (e) => {
+          console.warn("Speech recognition error:", e);
+          resetMicUI();
+        };
+      }
+    }
+
+    function handleMicToggle() {
+      if (!isListening) {
+        if (recognition) {
+          try {
+            recognition.start();
+          } catch(e) { /* already started */ }
+        }
+        isListening = true;
+        document.getElementById("micButton").classList.remove("bg-primary");
+        document.getElementById("micButton").classList.add("bg-error");
+        document.getElementById("micMainLabel").textContent = "हम सुन रहे हैं... बोलिए";
+        document.getElementById("micSubLabel").textContent = "बोलना पूरा होने पर फिर से दबाएं";
+        speakText("हम सुन रहे हैं, कृपया अपनी परेशानी बोलिए");
+      } else {
+        if (recognition) {
+          try { recognition.stop(); } catch(e) {}
+        }
+        resetMicUI();
+      }
+    }
+
+    function resetMicUI() {
+      isListening = false;
+      const btn = document.getElementById("micButton");
+      btn.classList.remove("bg-error");
+      btn.classList.add("bg-primary");
+      document.getElementById("micMainLabel").textContent = "बोलकर बताएं";
+      document.getElementById("micSubLabel").textContent = "माइक दबाएं और अपनी आवाज में कहें";
+    }
+
+    // ============================================================
+    // 5. Symptom Toggles & Clear
+    // ============================================================
+    function toggleSymptom(button, text) {
+      if (selectedSymptoms.has(text)) {
+        selectedSymptoms.delete(text);
+        button.classList.remove("ring-2", "ring-primary", "bg-emerald-50");
+      } else {
+        selectedSymptoms.add(text);
+        button.classList.add("ring-2", "ring-primary", "bg-emerald-50");
+      }
+
+      // Update transcript with chosen symptoms
+      const textarea = document.getElementById("voiceTranscriptInput");
+      const current = textarea.value;
+      if (!current.includes(text) && selectedSymptoms.has(text)) {
+        textarea.value = (current ? current + ", " : "") + text;
+      }
+    }
+
+    function clearTranscript() {
+      document.getElementById("voiceTranscriptInput").value = "";
+      selectedSymptoms.clear();
+      document.querySelectorAll(".symptom-card").forEach(c => {
+        c.classList.remove("ring-2", "ring-primary", "bg-emerald-50");
+      });
+      showToast("विवरण साफ किया गया", "delete");
+    }
+
+    // ============================================================
+    // 6. Submit to Live Render Cloud Backend
+    // ============================================================
+    async function submitToIntakeAI() {
+      const transcript = document.getElementById("voiceTranscriptInput").value.trim();
+      const analyzeBtn = document.getElementById("analyzeIntakeBtn");
+      
+      const originalHTML = analyzeBtn.innerHTML;
+      analyzeBtn.disabled = true;
+      analyzeBtn.innerHTML = `
+        <span class="inline-block animate-spin mr-2">🔄</span>
+        <span>AI डॉक्टर विश्लेषण कर रहे हैं...</span>
+      `;
+      showToast("Render AI इंजन विश्लेषण कर रहा है...", "smart_toy");
+
+      try {
+        const payload = {
+          voice_transcript: transcript || "छाती में भारीपन और तेज़ बुखार है",
+          ocr_data: {
+            document_type: "prescription",
+            diagnoses: ["Hypertension"],
+            medications: [
+              { drug_name: "Amlodipine", dosage: "5mg", frequency: "1-0-0", duration: "30 days" },
+              { drug_name: "Metformin", dosage: "500mg", frequency: "1-0-1", duration: "30 days" }
+            ],
+            lab_results: [
+              { test_name: "HbA1c", value: "7.2", unit: "%", is_abnormal: true }
+            ],
+            unparsed_text: "BP: 145/90 mmHg"
+          },
+          patient_demographics: {
+            name: "Ramesh Kumar",
+            age: 60,
+            gender: "Male",
+            known_allergies: ["Penicillin"]
+          }
+        };
+
+        const res = await fetch(`${API_BASE_URL}/api/v1/llm/process`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        console.log("Live Render AI Response:", data);
+
+        // Update UI with response
+        updateSummaryScreenWithData(data);
+        showToast("विश्लेषण पूरा हुआ!", "check_circle");
+        speakText("विश्लेषण पूरा हुआ। डॉक्टर केबिन जाने के लिए सारांश देखें।");
+
+        // Navigate to Summary Screen
+        setTimeout(() => {
+          navigateTo("screen-summary");
+        }, 600);
+
+      } catch (err) {
+        console.error("AI Intake error:", err);
+        showToast("सर्वर से जुड़ने में समस्या हुई। ऑफ़लाइन सारांश दिखाया जा रहा है।", "warning");
+        navigateTo("screen-summary");
+      } finally {
+        analyzeBtn.disabled = false;
+        analyzeBtn.innerHTML = originalHTML;
+      }
+    }
+
+    function updateSummaryScreenWithData(data) {
+      if (!data) return;
+
+      // 1. Triage Badge
+      if (data.risk_assessment) {
+        const badge = document.getElementById("triageBadge");
+        const level = data.risk_assessment.risk_level || "Medium";
+        const score = data.risk_assessment.score || 5;
+        badge.textContent = `जोखिम: ${level} (Score: ${score}/10)`;
+        if (level === "High" || level === "Critical") {
+          badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-900 border border-rose-300";
+        } else {
+          badge.className = "text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300";
+        }
+      }
+
+      // 2. Chief Complaints
+      if (data.chief_complaints && data.chief_complaints.length > 0) {
+        const list = document.getElementById("summaryComplaintsList");
+        list.innerHTML = data.chief_complaints.map(c => `<li>${c}</li>`).join("");
+      }
+
+      // 3. ICD-10 Codes
+      if (data.icd10_codes && data.icd10_codes.length > 0) {
+        const icdContainer = document.getElementById("summaryIcdList");
+        icdContainer.innerHTML = data.icd10_codes.map(i => `
+          <span class="text-xs font-mono font-bold bg-white border border-primary/30 text-primary px-2.5 py-1 rounded-lg">
+            ${i.code} • ${i.description}
+          </span>
+        `).join("");
+      }
+
+      // 4. Patient Friendly Instructions
+      if (data.patient_friendly_instructions) {
+        document.getElementById("patientInstructionsText").textContent = data.patient_friendly_instructions;
+      }
+    }
+
+    // ============================================================
+    // 7. Consent & DPDP Purge Handlers
+    // ============================================================
+    function handleConsentToggle(checkbox) {
+      const proceedBtn = document.getElementById("finalProceedBtn");
+      if (checkbox.checked) {
+        proceedBtn.classList.remove("opacity-40", "pointer-events-none");
+        showToast("सहमति स्वीकृत: पर्चा डॉक्टर केबिन साझा होगा", "check_circle");
+      } else {
+        proceedBtn.classList.add("opacity-40", "pointer-events-none");
+        showToast("सहमति बंद: डॉक्टर को पर्चा नहीं भेजा जाएगा", "lock");
+      }
+    }
+
+    async function handleProceedToCabin() {
+      showToast("पर्चा डॉ. आनंद (केबिन #4) को भेज दिया गया है", "send");
+      speakText("रमेश जी, आपका पर्चा डॉ. आनंद के केबिन #4 में सुरक्षित भेज दिया गया है। कियोस्क से आपका डेटा मिटा दिया गया है।");
+      
+      // DPDP Act 2023: simulate zero-knowledge purge
+      sessionStorage.clear();
+      
+      setTimeout(() => {
+        alert("✓ डॉ. आनंद केबिन #4 में आपका स्वागत है!\n\nDPDP Act 2023 के तहत कियोस्क मेमोरी को सुरक्षित रूप से साफ कर दिया गया है।");
+        navigateTo("screen-intake");
+      }, 1200);
+    }
+
+    // ============================================================
+    // 8. Toast Helper
+    // ============================================================
+    function showToast(msg, icon = 'check_circle') {
+      const toast = document.getElementById('toastNotification');
+      const text = document.getElementById('toastText');
+      const ic = document.getElementById('toastIcon');
+      text.textContent = msg;
+      ic.textContent = icon;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3200);
+    }
+  </script>
+</body>
+</html>

@@ -212,15 +212,15 @@
 <!-- Bottom Navigation Bar -->
 <nav class="fixed bottom-0 w-full z-40 pb-safe bg-surface/90 backdrop-blur-xl border-t border-surface-container-high" data-active-classes="text-primary font-bold">
 <div class="flex justify-around items-center h-16 px-2">
-<a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="intake-and-voice" href="#">
+<a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="intake-and-voice" href="../calm_spacious_voice_intake/code.html">
 <span class="material-symbols-outlined text-[22px]">mic</span>
 <span class="text-[11px] font-medium text-center">बातचीत</span>
 </a>
-<a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="smart-ocr-scan" href="#">
+<a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="smart-ocr-scan" href="../calm_clear_document_summary/code.html">
 <span class="material-symbols-outlined text-[22px]">document_scanner</span>
 <span class="text-[11px] font-medium text-center">पर्ची</span>
 </a>
-<a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="clinical-summary" href="#">
+<a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-xl text-on-surface-variant transition-colors active:scale-95" data-path="clinical-summary" href="../../index.html#summary">
 <span class="material-symbols-outlined text-[22px]">clinical_notes</span>
 <span class="text-[11px] font-medium text-center">सारांश</span>
 </a>
@@ -298,9 +298,13 @@
         }
       });
 
-      // Proceed to Cabin
+      // Proceed to Cabin with DPDP Purge
       proceedBtn.addEventListener('click', () => {
-        showNotice('पर्चा डॉ. आनंद के केबिन #4 में भेजा जा रहा है...', 'send');
+        showNotice('पर्चा डॉ. आनंद (केबिन #4) को भेजा गया • कियोस्क डेटा सुरक्षित रूप से मिटा दिया गया (DPDP Act 2023)', 'verified_user');
+        sessionStorage.clear();
+        setTimeout(() => {
+          window.location.href = '../../index.html#consent';
+        }, 2200);
       });
 
       // Help Button for Seniors
