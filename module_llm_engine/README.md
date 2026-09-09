@@ -242,7 +242,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-final String baseUrl = Platform.isAndroid ? 'http://10.0.2.2:8000' : 'http://localhost:8000';
+// Production Render cloud endpoint (or use http://localhost:8000 for local dev)
+final String baseUrl = Platform.isAndroid ? 'https://team-aces-sih.onrender.com' : 'https://team-aces-sih.onrender.com';
 
 Future<Map<String, dynamic>> submitClinicalIntake({
   String? voiceTranscript,
